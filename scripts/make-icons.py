@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate the Nirodaa PNG icon set from the logo's measured geometry.
+Generate the Paralelly PNG icon set from the logo's measured geometry.
 
 ── WHY THIS IS A SCRIPT AND NOT EIGHT HAND-DRAWN FILES ────────────────────
 The dot positions here are the same measured set as src/components/Logo.tsx.

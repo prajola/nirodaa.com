@@ -1,5 +1,5 @@
 /**
- * The Nirodaa mark.
+ * The Paralelly mark.
  *
  * A 3x3 dot matrix with the top-left cell empty and the bottom-left dot
  * smaller and muted — it reads as a matrix mid-write, which is exactly what
@@ -46,7 +46,7 @@ export default function Logo({ size = 26, className = "" }: { size?: number; cla
       viewBox="0 0 100 100"
       className={className}
       // Decorative: the wordmark beside it carries the accessible name, so
-      // announcing this too would read "Nirodaa Nirodaa".
+      // announcing this too would read "Paralelly Paralelly".
       aria-hidden="true"
       focusable="false"
     >

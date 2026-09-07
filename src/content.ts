@@ -21,7 +21,7 @@
  */
 
 export const BRAND = {
-  name: "Nirodaa",
+  name: "Paralelly",
   /* The positioning line the brief lands on: not "we store data in proteins",
      which sounds like an experiment, but the layer it belongs to. */
   line: "The molecular layer for long-term enterprise data storage.",
@@ -61,7 +61,7 @@ export const HERO = {
   titleB: "Not in machines.",
 
   sub:
-    "Nirodaa encodes enterprise data into amino-acid and protein-based media — a molecular archive with no drive to spin, no format to migrate and no hardware generation to survive. Built for data that must be kept for decades and read almost never.",
+    "Paralelly encodes enterprise data into amino-acid and protein-based media — a molecular archive with no drive to spin, no format to migrate and no hardware generation to survive. Built for data that must be kept for decades and read almost never.",
   primary: "Request enterprise access",
   secondary: "Explore the technology",
   kicker: "Archive once. Preserve for decades. Retrieve when needed.",
@@ -332,7 +332,7 @@ export const FOOTER = {
         { label: "Why molecular", href: "#technology" },
         { label: "Solutions", href: "#solutions" },
         { label: "Research", href: "#research" },
-        { label: "Contact", href: "mailto:hello@nirodaa.com" },
+        { label: "Contact", href: "mailto:hello@paralelly.com" },
       ],
     },
   ],

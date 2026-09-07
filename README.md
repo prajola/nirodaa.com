@@ -1,6 +1,6 @@
-# nirodaa.com
+# paralelly.com
 
-The marketing site for **Nirodaa** — the molecular layer for long-term
+The marketing site for **Paralelly** — the molecular layer for long-term
 enterprise data storage.
 
 Vite 6 · React 18 · TypeScript. No UI framework, no 3D library.
