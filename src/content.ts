@@ -73,7 +73,7 @@ export const HERO = {
   titleB: "you’ll ever migrate.",
 
   sub:
-    "Paralelly encodes enterprise data into amino-acid and protein-based media — a molecular archive with no drive to spin, no format to migrate and no hardware generation to survive. Built for data that must be kept for decades and read almost never.",
+    "Paralelly encodes enterprise data into amino-acid and protein-based media – a molecular archive with no drive to spin, no format to migrate and no hardware generation to survive. Built for data that must be kept for decades and read almost never.",
   primary: "Request enterprise access",
   secondary: "Explore the technology",
   kicker: "Archive once. Preserve for decades. Retrieve when needed.",
@@ -85,7 +85,7 @@ export const PROBLEM = {
   eyebrow: "The problem",
   title: "Enterprise data is growing faster than storage infrastructure.",
   lede:
-    "Enterprises generate enormous amounts of data that may be accessed once every few years — and still has to be preserved, verifiably, for decades.",
+    "Enterprises generate enormous amounts of data that may be accessed once every few years – and still has to be preserved, verifiably, for decades.",
   items: [
     { k: "Volume", v: "Historical data accumulates faster than it is ever read back." },
     { k: "Cost", v: "Storage spend rises with retention, not with usage." },
@@ -100,7 +100,7 @@ export const LAYER = {
   eyebrow: "The solution",
   title: "What if data could be stored at the molecular level?",
   lede:
-    "The platform converts digital information into a molecular representation designed for archival storage — a layer below cold storage, for data measured in decades rather than quarters.",
+    "The platform converts digital information into a molecular representation designed for archival storage – a layer below cold storage, for data measured in decades rather than quarters.",
   stack: [
     "Digital data",
     "Data encoding",
@@ -115,7 +115,7 @@ export const HOW = {
   eyebrow: "How it works",
   title: "Six stages, from selection to verified retrieval.",
   steps: [
-    { tag: "Select", body: "The enterprise selects data for archival — database snapshots, historical records, research datasets, compliance archives, log archives, AI training data." },
+    { tag: "Select", body: "The enterprise selects data for archival – database snapshots, historical records, research datasets, compliance archives, log archives, AI training data." },
     { tag: "Encode", body: "Binary data is converted into a molecular encoding scheme, with error correction applied before anything is synthesised." },
     { tag: "Synthesize", body: "The encoded information is represented in the selected amino-acid or protein medium." },
     { tag: "Preserve", body: "The molecular archive is held under controlled conditions, with no dependency on a running machine to survive." },
@@ -139,14 +139,14 @@ export const PRODUCTS = {
      So the shape is the architecture: a path, and a plane across it. */
   path: [
     { name: "Archive Gateway", role: "Ingress", body: "Ingest from the infrastructure you already run, without moving to a new platform first." },
-    { name: "Molecular Archive", role: "Store", body: "The archival store itself — long-term enterprise data held in molecular media." },
+    { name: "Molecular Archive", role: "Store", body: "The archival store itself – long-term enterprise data held in molecular media." },
     { name: "Molecular Vault", role: "Preserve", body: "The physical preservation layer, under controlled conditions." },
     { name: "Retrieval Engine", role: "Egress", body: "Recovers archived information on request and returns it as the original dataset." },
   ],
   plane: {
     name: "Archive Control Plane",
     role: "Governs all four",
-    body: "Manage, monitor and govern archives — policies, retention, audit, access.",
+    body: "Manage, monitor and govern archives – policies, retention, audit, access.",
     spans: ["Policies", "Retention", "Audit", "Access"],
   },
 };
@@ -180,7 +180,7 @@ export const CAPS = {
   eyebrow: "Capabilities",
   title: "What the platform does today, and what comes next.",
   lede:
-    "The archival path end to end — ingest, classify, encode, preserve, retrieve, verify — with governance around it.",
+    "The archival path end to end – ingest, classify, encode, preserve, retrieve, verify – with governance around it.",
   /* Shipping / in the MVP scope. */
   now: [
     "Enterprise data ingestion",
@@ -214,7 +214,7 @@ export const CAPS = {
     "Enterprise audit trails",
   ],
   note:
-    "The second list is roadmap, not capability. Nothing in it is available today — move an item up only when it ships.",
+    "The second list is roadmap, not capability. Nothing in it is available today – move an item up only when it ships.",
 };
 
 export const DASHBOARD = {
@@ -252,7 +252,7 @@ export const WHY = {
     items: ["Ultra-dense representation", "Built for long-term preservation", "Low-energy archival", "Hardware-independent representation", "Designed for deep cold data"],
   },
   note:
-    "Stated as design intent. Density, lifespan and cost advantages will be published here as measured figures once the technology has validated them experimentally — not before.",
+    "Stated as design intent. Density, lifespan and cost advantages will be published here as measured figures once the technology has validated them experimentally – not before.",
 };
 
 export const SOLUTIONS = {
@@ -291,7 +291,7 @@ export const RESEARCH = {
     { k: "Enterprise", v: 50 },
   ],
   note:
-    "Readiness is self-assessed against internal testing. Replace these with measured figures — storage density, retrieval accuracy, error rates, stability and environmental testing — before this page is public.",
+    "Readiness is self-assessed against internal testing. Replace these with measured figures – storage density, retrieval accuracy, error rates, stability and environmental testing – before this page is public.",
 };
 
 /* ── PUBLISHED EVIDENCE ─────────────────────────────────────────────────────
@@ -316,7 +316,7 @@ export const EVIDENCE = {
   eyebrow: "Published evidence",
   title: "Peptide storage is demonstrated, not hypothetical.",
   lede:
-    "Independent groups have encoded files into peptides, read them back by mass spectrometry, and recovered them intact. These are their published results, not ours — cited so the claims can be checked.",
+    "Independent groups have encoded files into peptides, read them back by mass spectrometry, and recovered them intact. These are their published results, not ours – cited so the claims can be checked.",
   items: [
     {
       k: "Files encoded and recovered",
@@ -326,7 +326,7 @@ export const EVIDENCE = {
     },
     {
       k: "Encoding density",
-      v: "3 bits per amino acid across an 8-amino-acid alphabet, measured at 1.7 × 10¹⁰ bits/g. Because synthesis does not require enzyme recognition, unnatural amino acids can extend the alphabet — a theoretical ceiling of 3.72× DNA.",
+      v: "3 bits per amino acid across an 8-amino-acid alphabet, measured at 1.7 × 10¹⁰ bits/g. Because synthesis does not require enzyme recognition, unnatural amino acids can extend the alphabet – a theoretical ceiling of 3.72× DNA.",
       src: "Ng et al., Nature Communications, 2021",
       href: "https://www.nature.com/articles/s41467-021-24496-9",
     },
@@ -338,13 +338,13 @@ export const EVIDENCE = {
     },
     {
       k: "Reading",
-      v: "Liquid chromatography with tandem mass spectrometry (LC-MS/MS) — established analytical instrumentation, not a bespoke sequencer.",
+      v: "Liquid chromatography with tandem mass spectrometry (LC-MS/MS) – established analytical instrumentation, not a bespoke sequencer.",
       src: "Ng et al., Nature Communications, 2021",
       href: "https://www.nature.com/articles/s41467-021-24496-9",
     },
     {
       k: "Preservation under accelerated ageing",
-      v: "Peptides held in a chitosan hydrogel returned their information in full after 3.5 days at 70 °C — an accelerated-ageing equivalent of over 600 years at 9.4 °C. Reported data density 2.44 × 10¹⁰ GB/g.",
+      v: "Peptides held in a chitosan hydrogel returned their information in full after 3.5 days at 70 °C – an accelerated-ageing equivalent of over 600 years at 9.4 °C. Reported data density 2.44 × 10¹⁰ GB/g.",
       src: "Luo et al., Communications Materials, 2025",
       href: "https://www.nature.com/articles/s43246-025-00915-y",
     },
@@ -357,7 +357,7 @@ export const EVIDENCE = {
          beyond the oldest recovered DNA. Thermal age, not calendar age, is
          the comparison that controls for burial temperature, which is the
          whole reason the Laetoli material survived. Use the paper. */
-      v: "Peptide sequences bound to mineral surfaces have been authenticated in 3.8-million-year-old ostrich eggshell from Laetoli — a thermal age of roughly 16 Ma at 10 °C, which the authors place two orders of magnitude beyond the oldest recovered DNA.",
+      v: "Peptide sequences bound to mineral surfaces have been authenticated in 3.8-million-year-old ostrich eggshell from Laetoli – a thermal age of roughly 16 Ma at 10 °C, which the authors place two orders of magnitude beyond the oldest recovered DNA.",
       src: "Demarchi et al., eLife, 2016",
       href: "https://elifesciences.org/articles/17092",
     },

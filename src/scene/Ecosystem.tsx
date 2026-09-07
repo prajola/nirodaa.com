@@ -229,7 +229,7 @@ export default function Ecosystem() {
   return (
     <div className="nr-eco">
       <div className="nr-eco-lists">
-        <p className="nr-eyebrow"><b>—</b> Ingestion</p>
+        <p className="nr-eyebrow"><b>–</b> Ingestion</p>
         <ul className="nr-chips">
           {INGEST.ingestion.map((label, i) => (
             <li key={label}>
@@ -248,7 +248,7 @@ export default function Ecosystem() {
         {/* The ladder. Rendered as a run with separators so it reads hot to
             cold, rather than as seven equal chips where the gradient is
             invisible. Indices still line up with the tier ring in the scene. */}
-        <p className="nr-eyebrow" style={{ marginTop: 30 }}><b>—</b> Classification</p>
+        <p className="nr-eyebrow" style={{ marginTop: 30 }}><b>–</b> Classification</p>
         <ul className="nr-chips nr-ladder">
           {INGEST.classes.slice(0, INGEST.ladderCount).map((label, i) => (
             <li key={label}>
@@ -264,7 +264,7 @@ export default function Ecosystem() {
           ))}
         </ul>
 
-        <p className="nr-eyebrow" style={{ marginTop: 24 }}><b>—</b> Flags</p>
+        <p className="nr-eyebrow" style={{ marginTop: 24 }}><b>–</b> Flags</p>
         <ul className="nr-chips">
           {INGEST.classes.slice(INGEST.ladderCount).map((label, j) => {
             const i = j + INGEST.ladderCount;
