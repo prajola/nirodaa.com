@@ -1,0 +1,764 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Nirodaa — the design layer.
+
+   Light ground, and the palette is taken from the mark rather than invented
+   alongside it. Every value below was measured off the supplied logo PNG:
+
+     ink    #081522   the four dark dots, averaged   18.4:1 on white
+     green  #66D186   the three bright dots          1.9:1  — NEVER text
+     deep   #26543E   the small muted dot            8.7:1
+
+   ⚠ The brand green is 1.9:1 on white. It is the right colour for a FILL —
+   a dot, a bar, a mark — and it is unreadable as type. So there are two
+   greens: --accent for anything that is a shape, and --accent-text (#12704A,
+   6.1:1) for anything a reader has to read. Using one for both is the
+   mistake this split exists to prevent.
+
+   Structure carries over from the research done for this build: a contained
+   3D object that stays out of the type's way, one accent used on almost
+   nothing, and section numbers as a mono index down the left, which is what
+   makes seventeen sections read as a document rather than as a scroll.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --bg:        #FFFFFF;
+  --surface:   #F7F8F9;
+  --surface-2: #F0F2F4;
+
+  --text:   #081522;   /* 18.4:1 — the mark's ink */
+  --text-2: #414B57;   /*  8.9:1 */
+  --text-3: #67717D;   /*  4.96:1 on white, 4.66:1 on --surface —
+                          it has to clear AA on BOTH grounds, since a
+                          section can be either */
+
+  --line:        rgba(8, 21, 34, 0.10);
+  --line-strong: rgba(8, 21, 34, 0.20);
+
+  --accent:      #66D186;                    /* fills only */
+  --accent-text: #12704A;                    /* 6.1:1 — anything readable */
+  --accent-deep: #26543E;
+  --accent-dim:  rgba(102, 209, 134, 0.14);
+
+  --sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  --gutter: clamp(20px, 4vw, 56px);
+  --max: 1240px;
+  /* The sticky nav's height, declared rather than measured, because the hero
+     subtracts it to fill exactly one screen. Set as a height on .nr-nav
+     below so the number is guaranteed true instead of an estimate that
+     drifts the moment the wordmark or logo size changes. */
+  --nav-h: 68px;
+  --pad: clamp(72px, 9vw, 132px);
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-2);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* iOS inflates font sizes on rotation to landscape unless told not to,
+     which silently breaks every clamp() on this page. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(8, 21, 34, 0.08);
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+
+.nr-wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
+/* No divider between sections. The tinted bands and the section padding do
+   the separating; a hairline on top of both was a third separator saying the
+   same thing, and it cut across the page every time two white sections met. */
+.nr-sec  { padding-block: var(--pad); position: relative; }
+
+/* The first section after the hero carries extra top padding: landing the
+   fold exactly on a boundary still lets a sliver of tint show on a screen
+   an odd number of pixels tall. This puts daylight after it. */
+#problem { padding-top: calc(var(--pad) + clamp(10px, 3vh, 40px)); }
+
+/* Anchors land under a sticky nav unless told otherwise — every footer and
+   nav link would otherwise scroll its heading behind the bar. */
+.nr-sec[id], #top { scroll-margin-top: calc(var(--nav-h) + 8px); }
+
+/* ── Section header ───────────────────────────────────────────────────────
+   The number is the accent's main job: a fixed-width mono index down the
+   left of the page, which is what makes twenty sections read as a document
+   rather than as a scroll. */
+.nr-head { max-width: 62ch; margin-bottom: clamp(34px, 4vw, 56px); }
+.nr-eyebrow {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 0 0 16px;
+  font-family: var(--mono);
+  font-size: 12.5px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-3);
+}
+.nr-eyebrow b { color: var(--accent-text); font-weight: 400; }
+.nr-h2 {
+  margin: 0 0 16px;
+  font-size: clamp(27px, 3.5vw, 44px);
+  font-weight: 600; line-height: 1.06; letter-spacing: -0.032em;
+  color: var(--text); text-wrap: balance;
+}
+.nr-lede { margin: 0; max-width: 58ch; font-size: clamp(15px, 1.2vw, 17px); line-height: 1.62; }
+
+/* ── Hero ─────────────────────────────────────────────────────────────────
+   Copy left, object right — the arrangement Resend uses, and the one that
+   suits a long headline. The object never overlaps the text. */
+.nr-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 38%);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+  /* ── ONE SCREEN, AND ONLY THE HERO ──────────────────────────────────
+     This was min(88svh, 880px), which left the top of the next section
+     showing above the fold — and the 880px cap made it worse the taller
+     the display: on a 1200px window the hero stopped at 880px and handed
+     over 250px of Problem to the first screen. Filling the viewport minus
+     the nav means the fold lands on the hero's own bottom edge at every
+     height, so there is no cap to re-introduce the bug.
+
+     svh, not vh: on mobile Safari vh is the address-bar-retracted height,
+     so a 100vh hero is taller than the screen actually is on load and the
+     kicker sits under the browser chrome.
+
+     Content is centred, so a tall window reads as breathing room rather
+     than as a gap — and min-height never clips, it only grows, so a short
+     landscape window pushes the section taller instead of cutting it. */
+  min-height: calc(100svh - var(--nav-h));
+  padding-block: clamp(72px, 9vh, 132px) clamp(56px, 8vh, 96px);
+}
+.nr-h1 {
+  margin: 0 0 22px;
+  font-size: clamp(38px, 5.6vw, 76px);
+  font-weight: 600; line-height: 0.98; letter-spacing: -0.038em;
+  color: var(--text); text-wrap: balance;
+}
+.nr-h1 em { font-style: normal; color: var(--accent-text); }
+.nr-hero-sub { margin: 0 0 32px; max-width: 50ch; font-size: clamp(16.5px, 1.45vw, 20px); line-height: 1.58; }
+.nr-kicker {
+  margin: 26px 0 0;
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.nr-chain { display: block; width: 100%; aspect-ratio: 1; pointer-events: none; }
+
+/* The four-stage transition under the hero copy. */
+.nr-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 30px; }
+.nr-flow span {
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.nr-flow i { color: var(--accent-text); font-style: normal; }
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.nr-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.nr-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  height: 50px; padding: 0 26px;
+  font-size: 15px; font-weight: 500; letter-spacing: 0.01em;
+  border-radius: 8px;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+.nr-btn-solid { background: var(--text); color: #FFFFFF; font-weight: 600; }
+.nr-btn-solid:hover { background: #16283A; }
+.nr-btn-ghost { color: var(--text); border: 1px solid var(--line-strong); }
+.nr-btn-ghost:hover { border-color: var(--text); background: rgba(8, 21, 34, 0.04); }
+
+/* ── Reusable blocks ──────────────────────────────────────────────────── */
+.nr-grid { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.nr-grid > * { background: var(--bg); padding: clamp(20px, 2.4vw, 30px); }
+.nr-stats > div { background: var(--bg); }
+.nr-g3 { grid-template-columns: repeat(3, 1fr); }
+.nr-cell h3 { margin: 0 0 9px; font-size: 15.5px; font-weight: 600; letter-spacing: -0.012em; color: var(--text); }
+.nr-cell p  { margin: 0; font-size: 14px; line-height: 1.6; }
+
+/* Key/value rows. */
+.nr-rows { margin: 0; display: grid; }
+.nr-rows > div { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 8px 24px; padding: 16px 0; border-top: 1px solid var(--line); }
+.nr-rows > div:last-child { border-bottom: 1px solid var(--line); }
+.nr-rows dt { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
+.nr-rows dd { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--text-2); }
+
+/* Chips. */
+.nr-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.nr-chips li {
+  padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--text-2);
+}
+
+
+/* A vertical pipeline: the encode/preserve stack and the architecture. */
+.nr-stack { display: grid; gap: 8px; }
+.nr-stack div {
+  display: flex; align-items: center; gap: 12px;
+  padding: 15px 18px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--surface); font-size: 14.5px; color: var(--text);
+}
+.nr-stack div span { font-family: var(--mono); font-size: 11px; color: var(--accent-text); }
+.nr-stack i { display: block; text-align: center; color: var(--text-3); font-style: normal; line-height: 1; }
+
+/* Stat tiles. */
+.nr-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.nr-stats > div { background: var(--bg); padding: clamp(18px, 2.2vw, 26px); }
+.nr-stats dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+.nr-stats dd { margin: 0; font-size: clamp(22px, 2.6vw, 32px); font-weight: 600; letter-spacing: -0.03em; color: var(--text); }
+
+/* Tables scroll inside their own box rather than pushing the page sideways. */
+.nr-tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+.nr-table { width: 100%; min-width: 34rem; border-collapse: collapse; font-size: 14px; }
+.nr-table th, .nr-table td { padding: 13px 18px; text-align: left; border-bottom: 1px solid var(--line); }
+.nr-table tbody tr:last-child td { border-bottom: 0; }
+.nr-table thead th { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.nr-table td { color: var(--text-2); }
+.nr-table td:first-child { color: var(--text); font-family: var(--mono); font-size: 13px; }
+.nr-ok { color: var(--accent-text); }
+
+/* Readiness bars. */
+.nr-bars { display: grid; gap: 14px; }
+.nr-bar { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 3.5rem; gap: 16px; align-items: center; }
+.nr-bar span:first-child { font-family: var(--mono); font-size: 12px; color: var(--text-2); }
+.nr-bar u { display: block; height: 4px; border-radius: 2px; background: rgba(8,21,34,0.08); text-decoration: none; overflow: hidden; }
+.nr-bar u b { display: block; height: 100%; background: var(--accent); }
+.nr-bar span:last-child { font-family: var(--mono); font-size: 12px; color: var(--text-3); text-align: right; }
+
+/* ── The claim marker ─────────────────────────────────────────────────────
+   Every unproven figure on this site carries one. It is deliberately not
+   subtle: the brief's hardest rule is not to claim what has not been
+   validated, and a marker nobody notices does not enforce anything. */
+.nr-note {
+  margin: clamp(22px, 3vw, 32px) 0 0;
+  max-width: 68ch; padding: 14px 18px;
+  border-left: 2px solid var(--accent-text);
+  background: var(--accent-dim);
+  font-size: 13.5px; line-height: 1.6; color: var(--text-2);
+  border-radius: 0 8px 8px 0;
+}
+.nr-tag {
+  display: inline-block; margin-left: 8px; padding: 2px 7px;
+  border: 1px solid var(--line-strong); border-radius: 4px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-3); vertical-align: middle;
+}
+
+/* ── Reveal ───────────────────────────────────────────────────────────── */
+.nr-reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1); }
+.nr-reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .nr-reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ── Nav ──────────────────────────────────────────────────────────────── */
+.nr-nav {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; align-items: center; gap: clamp(14px, 3vw, 36px);
+  max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter);
+  height: var(--nav-h);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom: 1px solid transparent;
+}
+.nr-brand {
+  display: inline-flex; align-items: center; gap: 11px;
+  font-size: 21px; font-weight: 600; letter-spacing: -0.024em;
+  color: var(--text); flex: none;
+}
+/* The footer wordmark carries the block on its own — there is no nav row
+   beside it competing for the eye — so it takes another step up. */
+.nr-foot .nr-brand { font-size: 24px; }
+.nr-mark { display: block; flex: none; }
+.nr-nav-links { display: flex; gap: clamp(14px, 2vw, 30px); margin-left: auto; font-size: 14px; color: var(--text-2); }
+.nr-nav-links a:hover { color: var(--text); }
+
+/* ── Footer ───────────────────────────────────────────────────────────── */
+.nr-foot { border-top: 1px solid var(--line); background: var(--surface); }
+/* Brand takes the flexible left; the two link columns hug their content and
+   are pushed to the right edge by it. `1fr` columns stretched them across
+   half the footer, so five short labels sat in a column three times wider
+   than the longest of them — which is what made the block look unaligned
+   rather than merely wide. `auto` sizes each column to its own longest
+   label, so both columns tighten and the pair right-aligns as a unit. */
+.nr-foot-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: clamp(28px, 5vw, 88px);
+  align-items: start;
+  padding-block: clamp(46px, 6vw, 72px) 36px;
+}
+.nr-foot h2 { margin: 8px 0 15px; font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); }
+.nr-foot ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; }
+.nr-foot li a { display: inline-block; padding: 5px 0; font-size: 14px; color: var(--text-2); }
+.nr-foot li a:hover { color: var(--accent-text); }
+.nr-foot-brand p { margin: 14px 0 0; font-size: 14px; max-width: 30ch; color: var(--text-3); }
+.nr-foot-bottom { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; padding-block: 20px 32px; border-top: 1px solid var(--line); font-size: 13px; color: var(--text-3); }
+.nr-foot-bottom ul { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0; padding: 0; list-style: none; }
+.nr-foot-bottom a { display: inline-block; padding: 4px 0; }
+.nr-foot-bottom a:hover { color: var(--accent-text); }
+
+/* ── The mobile menu ──────────────────────────────────────────────────────
+   Hidden above 880px, where the real nav row does the job. The button is
+   44x44 — the smallest target that can be hit reliably with a thumb, and
+   the floor Apple and Google both publish. */
+.nr-burger {
+  display: none;
+  margin-left: auto;
+  width: 44px; height: 44px;
+  align-items: center; justify-content: center;
+  padding: 0; border: 0; background: none; color: var(--text);
+  cursor: pointer;
+  /* Stops a double-tap from zooming the page instead of opening the menu. */
+  touch-action: manipulation;
+}
+.nr-burger-box { position: relative; display: block; width: 20px; height: 12px; }
+.nr-burger-box i {
+  position: absolute; left: 0; width: 100%; height: 1.5px;
+  border-radius: 2px; background: currentColor;
+  transition: transform .26s cubic-bezier(.4,0,.2,1), top .2s ease;
+}
+.nr-burger-box i:first-child { top: 0; }
+.nr-burger-box i:last-child  { top: 10.5px; }
+/* Open: both bars travel to the middle and cross. Two bars rather than the
+   usual three, because three means the middle one has to fade — and a bar
+   that fades while the others rotate never lands cleanly. */
+.nr-burger[aria-expanded="true"] .nr-burger-box i { top: 5px; }
+.nr-burger[aria-expanded="true"] .nr-burger-box i:first-child { transform: rotate(45deg); }
+.nr-burger[aria-expanded="true"] .nr-burger-box i:last-child  { transform: rotate(-45deg); }
+
+.nr-menu {
+  position: fixed; top: var(--nav-h); left: 0; right: 0;
+  z-index: 39;
+  /* Bounded and scrollable: with a longer nav on a short landscape screen
+     the last link would otherwise sit below the bottom of the window with
+     no way to reach it. */
+  max-height: calc(100svh - var(--nav-h));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px var(--gutter) max(28px, env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 18px 40px -24px rgba(8, 21, 34, 0.28);
+}
+.nr-menu[hidden] { display: none; }
+.nr-menu ul { margin: 0; padding: 0; list-style: none; }
+.nr-menu li + li { border-top: 1px solid var(--line); }
+.nr-menu li a {
+  display: block;
+  padding: 15px 2px;          /* ~50px tall — comfortably over the 44px floor */
+  font-size: 17px; font-weight: 500; letter-spacing: -0.01em;
+  color: var(--text);
+}
+.nr-menu li a:active { color: var(--accent-text); }
+.nr-menu-cta { display: flex; justify-content: center; width: 100%; margin-top: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nr-burger-box i { transition: none; }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  .nr-hero { grid-template-columns: 1fr; min-height: 0; gap: 40px; }
+  /* Object under the copy, smaller: at this width it would otherwise sit
+     behind the headline rather than beside it. */
+  .nr-chain { max-width: 420px; margin-inline: auto; }
+  .nr-foot-grid { grid-template-columns: repeat(2, 1fr); }
+  .nr-foot-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 880px) {
+  /* The desktop row goes; the burger arrives in the same breakpoint, so
+     there is never a width at which neither is present. */
+  .nr-nav-links { display: none; }
+  .nr-burger { display: inline-flex; }
+  .nr-g3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .nr-g3 { grid-template-columns: 1fr; }
+  .nr-stats { grid-template-columns: repeat(2, 1fr); }
+  .nr-rows > div { grid-template-columns: 1fr; gap: 4px; }
+  .nr-bar { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) 3rem; gap: 10px; }
+  .nr-cta { flex-direction: column; align-items: stretch; }
+  .nr-cta .nr-btn { width: 100%; }
+  .nr-foot-grid { grid-template-columns: repeat(2, 1fr); }
+  .nr-lede, .nr-hero-sub { max-width: none; }
+  .nr-chain { max-width: 300px; }
+}
+@supports (padding: max(0px)) {
+  .nr-wrap, .nr-nav { padding-left: max(var(--gutter), env(safe-area-inset-left)); padding-right: max(var(--gutter), env(safe-area-inset-right)); }
+  .nr-foot-bottom { padding-bottom: max(32px, env(safe-area-inset-bottom)); }
+}
+
+/* ── The six-stage pipeline ───────────────────────────────────────────────
+   Steps left, scene right and sticky. The scene stays in view while the
+   steps scroll past it, so the morph is visible at the moment the step
+   describing it is being read — which is the entire reason to animate this
+   rather than illustrate it six times. */
+.nr-pipe {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 46%);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+.nr-pipe-steps { list-style: none; margin: 0; padding: 0; display: grid; }
+.nr-pipe-step {
+  display: grid; grid-template-columns: 34px minmax(0, 1fr);
+  gap: 16px; width: 100%; text-align: left;
+  padding: 20px 0; border: 0; border-top: 1px solid var(--line);
+  background: none; cursor: pointer; font: inherit; color: inherit;
+  transition: opacity .3s ease;
+  opacity: 0.45;
+}
+.nr-pipe-steps li:last-child .nr-pipe-step { border-bottom: 1px solid var(--line); }
+.nr-pipe-step[aria-current="step"] { opacity: 1; }
+.nr-pipe-step:hover { opacity: 0.8; }
+.nr-pipe-step[aria-current="step"]:hover { opacity: 1; }
+.nr-pipe-n { font-family: var(--mono); font-size: 12px; color: var(--accent-text); padding-top: 3px; }
+.nr-pipe-step strong { display: block; font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: -0.012em; margin-bottom: 5px; }
+.nr-pipe-step em { display: block; font-style: normal; font-size: 14.5px; line-height: 1.6; color: var(--text-2); max-width: 56ch; }
+
+.nr-pipe-stage { position: sticky; top: calc(var(--nav-h) + 24px); }
+.nr-pipe-stage canvas {
+  display: block; width: 100%; aspect-ratio: 1;
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--surface);
+}
+.nr-pipe-label {
+  display: flex; align-items: baseline; gap: 10px;
+  margin: 14px 0 0;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.nr-pipe-label span { color: var(--accent-text); }
+
+@media (max-width: 1080px) {
+  /* Below this the scene has no column to sit in. It moves above the steps
+     and stops being sticky — a pinned square on a narrow screen eats the
+     viewport the steps need. */
+  .nr-pipe { grid-template-columns: 1fr; }
+  .nr-pipe-stage { position: static; order: -1; max-width: 420px; margin-inline: auto; }
+}
+@media (max-width: 640px) {
+  .nr-pipe-stage { max-width: 300px; }
+  .nr-pipe-step { padding: 16px 0; gap: 12px; grid-template-columns: 28px minmax(0, 1fr); }
+}
+
+/* ── The ingestion ecosystem ──────────────────────────────────────────────
+   Lists left, scene right and sticky — the same arrangement as the pipeline,
+   so the two 3D sections read as one system rather than as two experiments.
+
+   The chips are <button>s, which is the point: fourteen labels drawn into
+   the canvas would be unreadable at this size, unselectable, untranslatable
+   and invisible to a screen reader. The list carries the words; the canvas
+   carries the topology; hover links them. */
+.nr-eco {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 46%);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+.nr-chip-btn {
+  display: inline-block;
+  padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px;
+  background: none; cursor: pointer;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--text-2);
+  transition: border-color .2s ease, color .2s ease, background-color .2s ease;
+}
+.nr-chip-btn:hover,
+.nr-chip-btn[aria-pressed="true"] {
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+  background: var(--accent-dim);
+}
+/* The chips are already list items, so the <li> must not double the ring. */
+.nr-eco .nr-chips li { padding: 0; border: 0; border-radius: 0; }
+
+/* The lists column. Without a measure the chip rows run the full width and
+   the two groups stop reading as two groups. */
+.nr-eco-lists { max-width: 34rem; }
+
+.nr-eco-stage { position: sticky; top: calc(var(--nav-h) + 24px); }
+.nr-eco-stage canvas {
+  display: block; width: 100%; aspect-ratio: 1;
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--surface);
+}
+
+@media (max-width: 1080px) {
+  .nr-eco { grid-template-columns: 1fr; }
+  .nr-eco-stage { position: static; order: -1; max-width: 420px; margin-inline: auto; }
+}
+@media (max-width: 640px) {
+  .nr-eco-stage { max-width: 300px; }
+}
+
+/* ── Platform: a path, and a plane across it ──────────────────────────────
+   Deliberately NOT a third 3D scene. The hero, the pipeline and the
+   ecosystem already animate; a fourth canvas would dilute all of them, and
+   this section describes a fixed relationship rather than a process. A
+   structural diagram is the honest shape for it. */
+.nr-plane {
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  padding: clamp(20px, 2.4vw, 28px);
+  background: var(--accent-dim);
+  position: relative;
+}
+.nr-plane-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.nr-plane-head h3 { margin: 0; font-size: 16.5px; font-weight: 600; color: var(--text); letter-spacing: -0.014em; }
+.nr-plane-head span {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent-text);
+}
+.nr-plane > p { margin: 8px 0 14px; font-size: 14.5px; line-height: 1.6; max-width: 70ch; }
+.nr-plane ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.nr-plane li {
+  padding: 5px 11px; border: 1px solid var(--line-strong); border-radius: 999px;
+  background: var(--bg);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-2);
+}
+
+/* The four legs of the path, with the plane's authority dropping onto each. */
+.nr-path {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(12px, 1.4vw, 20px);
+  margin-top: 34px;
+  position: relative;
+}
+/* Ticks from the plane down onto each leg — drawn once as a repeating
+   gradient rather than four elements. */
+.nr-path-item {
+  position: relative;
+  padding: clamp(18px, 2vw, 24px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+}
+.nr-path-role {
+  display: block; margin-bottom: 10px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent-text);
+}
+.nr-path-item h3 { margin: 0 0 8px; font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.012em; }
+.nr-path-item p  { margin: 0; font-size: 13.5px; line-height: 1.58; }
+/* The arrow sits in the gutter between cards, so the row reads as a
+   sequence rather than as four unrelated tiles. */
+.nr-path-arrow {
+  position: absolute;
+  right: calc(clamp(12px, 1.4vw, 20px) / -2);
+  top: 50%;
+  transform: translate(50%, -50%);
+  font-style: normal;
+  font-size: 14px;
+  color: var(--text-3);
+  background: var(--bg);
+  padding: 2px 0;
+  line-height: 1;
+}
+
+@media (max-width: 1080px) {
+  .nr-path { grid-template-columns: repeat(2, 1fr); row-gap: 30px; }
+  /* On two columns the arrow at the end of each row points into nothing. */
+  .nr-path-item:nth-child(2n) .nr-path-arrow { display: none; }
+}
+@media (max-width: 640px) {
+  .nr-path { grid-template-columns: 1fr; row-gap: 28px; }
+  /* Stacked, the flow runs downward — so the arrow does too. */
+  .nr-path-item .nr-path-arrow {
+    display: block;
+    right: auto; left: 50%; top: auto; bottom: calc(28px / -2);
+    transform: translate(-50%, 50%) rotate(90deg);
+  }
+  .nr-path-item:last-child .nr-path-arrow { display: none; }
+}
+
+/* ── Section grounds ──────────────────────────────────────────────────────
+   Two alternatives to white, each with a job.
+
+   `tint` is the warm-grey surface. Cards inside it are --bg white, so they
+   lift off the ground instead of dissolving into it — which is why the
+   grid's own hairlines have to strengthen here: a 10%-ink line that reads
+   against white is nearly invisible against #F7F8F9.
+
+   `ink` is used once, on the close. On a white site an inverted final band
+   is real punctuation, and it is the only place the brand green can be a
+   button fill: #66D186 is 1.9:1 on white and unusable, but on #081522 it
+   is a strong, legible surface with dark text on it. */
+.nr-sec--tint { background: var(--surface); }
+.nr-sec--tint .nr-grid,
+.nr-sec--tint .nr-stats { background: var(--line-strong); border-color: var(--line-strong); }
+.nr-sec--tint .nr-tablewrap { border-color: var(--line-strong); background: var(--bg); }
+.nr-sec--tint .nr-rows > div { border-top-color: var(--line-strong); }
+.nr-sec--tint .nr-rows > div:last-child { border-bottom-color: var(--line-strong); }
+.nr-sec--tint .nr-bar u { background: rgba(8, 21, 34, 0.12); }
+.nr-sec--tint .nr-chips li { background: var(--bg); }
+
+.nr-sec--ink {
+  background: var(--text);
+  color: rgba(255, 255, 255, 0.72);
+}
+.nr-sec--ink .nr-h2 { color: #FFFFFF; }
+.nr-sec--ink .nr-lede { color: rgba(255, 255, 255, 0.72); }
+/* The green finally gets to be a fill. */
+.nr-sec--ink .nr-btn-solid { background: var(--accent); color: #06251A; }
+.nr-sec--ink .nr-btn-solid:hover { background: #8BE0AC; }
+.nr-sec--ink :focus-visible { outline-color: var(--accent); }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   HOVER
+
+   One behaviour, applied everywhere, rather than a different effect per
+   component. The rule is: hover REVEALS STRUCTURE, it does not decorate.
+
+   This design is built from hairlines and mono labels on a light ground, so
+   the honest hover is the hairline coming forward and the element's own
+   marker taking the accent — the number, the role, the heading. Nothing
+   moves and nothing casts a shadow: on a document-like page a lifting card
+   reads as a widget, and fifteen sections of lifting widgets read as noise.
+
+   Colour and border only, so every one of these composites on the GPU and
+   none of them triggers layout.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.nr-cell,
+.nr-path-item,
+.nr-stats > div,
+.nr-stack div,
+.nr-plane li {
+  transition: background-color .22s ease, border-color .22s ease, color .22s ease;
+}
+
+/* Cards in a hairline grid. The grid draws its lines with a 1px gap, so a
+   cell cannot own a border — it takes the accent on its heading and a wash
+   of the accent tint instead. */
+.nr-cell:hover { background: var(--accent-dim); }
+.nr-cell:hover h3 { color: var(--accent-text); }
+
+/* Bordered cards can take the border itself. */
+.nr-path-item:hover,
+.nr-path-item:hover h3 { color: var(--accent-text); }
+
+/* Stat tiles: the label leads, so the label lights. */
+.nr-stats > div:hover { background: var(--accent-dim); }
+.nr-stats > div:hover dt { color: var(--accent-text); }
+
+/* Stack rows — the solution pipeline and the architecture. */
+.nr-stack div:hover { border-color: var(--accent-text); background: var(--accent-dim); }
+
+/* Key/value rows and table rows: a wash across the row, so the eye can
+   track one line across a wide measure. That is the one place hover is
+   doing something functional rather than responsive. */
+.nr-rows > div,
+.nr-table tbody tr { transition: background-color .18s ease; }
+.nr-rows > div:hover,
+.nr-table tbody tr:hover { background: var(--accent-dim); }
+
+/* The plane's spans and the standalone chips. */
+.nr-plane li:hover { border-color: var(--accent-text); color: var(--accent-text); }
+
+/* Keyboard parity. Anything that responds to a pointer has to respond to
+   focus, or the whole system is mouse-only. */
+.nr-cell:focus-within,
+.nr-path-item:focus-within,
+.nr-stack div:focus-within { background: var(--accent-dim); border-color: var(--accent-text); }
+
+/* Section headers: the number is the page's index, so hovering a section
+   brings its own number forward. Subtle, and it makes the numbering feel
+   like a system rather than decoration. */
+.nr-sec .nr-eyebrow b { transition: color .25s ease, opacity .25s ease; opacity: 0.75; }
+.nr-sec:hover .nr-eyebrow b { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The states still change — they just arrive rather than travel. */
+  .nr-cell, .nr-path-item, .nr-stats > div, .nr-stack div, .nr-plane li,
+  .nr-rows > div, .nr-table tbody tr, .nr-sec .nr-eyebrow b { transition: none; }
+}
+
+/* Hover styling is only correct where hovering exists. On a touch screen
+   :hover can stick after a tap, leaving a tinted card the user cannot
+   clear. */
+@media (hover: none) {
+  .nr-cell:hover, .nr-path-item:hover,
+  .nr-stats > div:hover, .nr-stack div:hover, .nr-plane li:hover,
+  .nr-rows > div:hover, .nr-table tbody tr:hover {
+    background: revert-layer; border-color: revert-layer; color: revert-layer;
+  }
+}
+
+/* ── The temperature ladder ───────────────────────────────────────────────
+   Hot → Warm → Cold → Deep archive is a gradient, not a set. Chevrons
+   between the chips make the direction readable; without them four equal
+   pills say nothing about which end molecular storage sits at.
+
+   The chevron is a ::after on the li rather than a character in the markup,
+   so it is never selected, copied or read aloud — it is punctuation, not
+   content. */
+.nr-ladder { align-items: center; }
+.nr-ladder li { position: relative; display: flex; align-items: center; }
+.nr-ladder li:not(:last-child)::after {
+  content: "→";
+  margin: 0 2px 0 8px;
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1;
+}
+/* The last rung is where the product lives, so it is the one that carries
+   the accent at rest rather than only on hover. */
+.nr-ladder li:last-child .nr-chip-btn {
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+  background: var(--accent-dim);
+}
+
+@media (max-width: 420px) {
+  /* Wrapped, a chevron can end a line pointing at nothing. */
+  .nr-ladder li:not(:last-child)::after { margin-left: 6px; }
+}
+
+
+/* ── Touch ────────────────────────────────────────────────────────────────
+   Keyed to the pointer, not the viewport: a 1024px tablet is a touch device
+   at a desktop width, and a small laptop window is not a touch device at a
+   phone width. Width is the wrong question — these are thumb sizes.
+
+   44px is the floor Apple and Google both publish. The chips and footer
+   links were 31px and 32px, which is fine for a cursor and a coin-flip for
+   a thumb. Where a visible box that big would look heavy, the target is
+   grown with a ::after overlay instead, so it is hit-tested at 44px while
+   still being drawn at its designed size. */
+@media (pointer: coarse) {
+  .nr-chip-btn { padding: 11px 16px; font-size: 12.5px; }
+
+  .nr-foot li a { padding: 11px 0; }
+  .nr-foot ul { gap: 0; }
+
+  .nr-foot-bottom { gap: 4px 24px; }
+  .nr-foot-bottom a { position: relative; padding: 12px 0; }
+
+  /* The eyebrow links and inline anchors keep their type size and gain
+     reach either side of it. */
+  .nr-menu li a { padding: 16px 2px; }
+}
+
+/* ── Small phones ─────────────────────────────────────────────────────────
+   360px and below: the iPhone SE and the long tail of Android. */
+@media (max-width: 380px) {
+  /* At 5.6vw the headline is already at its 38px floor, so it is the
+     tracking and not the size that needs to give — tight letter-spacing on
+     a small screen is what pushes a long word past the gutter. */
+  .nr-h1 { font-size: 34px; letter-spacing: -0.03em; }
+  .nr-stats { grid-template-columns: 1fr; }
+  .nr-foot-grid { grid-template-columns: 1fr; }
+  .nr-chain { max-width: 260px; }
+  .nr-pipe-stage, .nr-eco-stage { max-width: 260px; }
+}
