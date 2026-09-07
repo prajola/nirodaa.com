@@ -188,6 +188,25 @@ a { color: inherit; text-decoration: none; }
 .nr-rows dt { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
 .nr-rows dd { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--text-2); }
 
+/* ── Citation ─────────────────────────────────────────────────────────────
+   Set on its own line, in mono, because it is metadata about the sentence
+   above rather than a continuation of it — and inline it read as part of the
+   finding, which is the one thing a citation must not do.
+
+   Underlined, not colour-only: this is the page's only outbound link in
+   running text, and colour alone does not distinguish a link for a reader
+   who cannot see the green. */
+.nr-cite {
+  display: block; margin-top: 7px;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.04em;
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(18, 112, 74, 0.35);
+  transition: text-decoration-color .2s ease;
+}
+.nr-cite:hover { text-decoration-color: var(--accent-text); }
+
 /* Chips. */
 .nr-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .nr-chips li {

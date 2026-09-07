@@ -3,16 +3,14 @@
  *
  * Section order follows the brief: hero, problem, the new layer, how it
  * works, platform, ingestion, policy, dashboard, security, why molecular,
- * solutions, integration, research, sustainability, pricing, architecture,
- * CTA.
+ * solutions, integration, research, sustainability, pricing, CTA.
  *
  * ── SHAPE CARRIES MEANING ────────────────────────────────────────────────
  * Seventeen sections all shaped "eyebrow, title, three cards" read as one
  * undifferentiated scroll and the reader stops distinguishing them by about
  * the fourth. So each has its own shape: the pipeline is a stack, how-it-
  * works is a numbered rail, the policy is a code block, the dashboard is
- * stats plus a table, readiness is bars, architecture is a stack again
- * because it describes one.
+ * stats plus a table, readiness is bars.
  *
  * ── AND SO DOES THE CLAIM MARKER ─────────────────────────────────────────
  * The brief's hardest rule is not to claim what has not been validated.
@@ -23,7 +21,7 @@
 
 import { lazy, Suspense, useEffect, useRef } from "react";
 import {
-  ARCH, BRAND, CTA, DASHBOARD, FOOTER, HERO, HOW, INGEST, LAYER,
+  BRAND, CTA, DASHBOARD, EVIDENCE, FOOTER, HERO, HOW, INGEST, LAYER,
   CAPS, NAV, PROBLEM, PRODUCTS, RESEARCH, SOLUTIONS, WHY,
 } from "@/content";
 import Logo from "@/components/Logo";
@@ -32,7 +30,7 @@ import "@/styles.css";
 
 /* The hero object is decoration and the page reads without it, so it never
    blocks first paint. */
-const MolecularChain = lazy(() => import("@/scene/MolecularChain"));
+const MolecularChip = lazy(() => import("@/scene/MolecularChip"));
 /* The six-stage scene. Also lazy — it is below the fold by definition. */
 const Pipeline = lazy(() => import("@/scene/Pipeline"));
 const Ecosystem = lazy(() => import("@/scene/Ecosystem"));
@@ -62,7 +60,7 @@ function Reveal({ children, className = "" }: { children: React.ReactNode; class
    every index downstream renumbers itself. */
 const ORDER = [
   PROBLEM, LAYER, HOW, PRODUCTS, INGEST, CAPS, DASHBOARD,
-  WHY, SOLUTIONS, RESEARCH, ARCH,
+  WHY, SOLUTIONS, RESEARCH,
 ];
 const num = (o: unknown) => String(ORDER.indexOf(o as never) + 1).padStart(2, "0");
 
@@ -132,7 +130,7 @@ export default function App() {
               </div>
               <p className="nr-kicker">{HERO.kicker}</p>
             </div>
-            <Suspense fallback={null}><MolecularChain /></Suspense>
+            <Suspense fallback={null}><MolecularChip /></Suspense>
           </section>
         </div>
 
@@ -313,24 +311,47 @@ export default function App() {
             </div>
             <Note>{RESEARCH.note}</Note>
           </Reveal>
+
+          {/* Published evidence. Deliberately the last thing in this section
+              and visually the heaviest: it is the only block on the page whose
+              numbers are measurements, and the self-assessed bars above read
+              very differently once a reader has seen citations underneath
+              them. Each figure names its paper and links out, because a claim
+              a reader cannot check is worth what an uncited one is worth. */}
+          <Reveal>
+            <p className="nr-eyebrow" style={{ marginTop: 44 }}>
+              <b>—</b> {EVIDENCE.eyebrow}<span className="nr-tag">Third-party</span>
+            </p>
+            <h3 className="nr-h2" style={{ fontSize: "clamp(21px, 2.2vw, 29px)" }}>
+              {EVIDENCE.title}
+            </h3>
+            <p className="nr-lede">{EVIDENCE.lede}</p>
+            <dl className="nr-rows" style={{ marginTop: 26 }}>
+              {EVIDENCE.items.map((it) => (
+                <div key={it.k}>
+                  <dt>{it.k}</dt>
+                  <dd>
+                    {it.v}{" "}
+                    {/* rel=noopener on every outbound link: these go to
+                        publishers, and a new tab with window.opener is a
+                        handover this page has no reason to make. */}
+                    <a
+                      className="nr-cite"
+                      href={it.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {it.src}
+                    </a>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <Note>{EVIDENCE.note}</Note>
+          </Reveal>
         </Section>
 
         {/* ── 16 Architecture ─────────────────────────────────────────── */}
-        <Section id="architecture">
-          <Reveal><Head n={num(ARCH)} eyebrow={ARCH.eyebrow} title={ARCH.title} /></Reveal>
-          <Reveal>
-            <div className="nr-stack">
-              {ARCH.layers.map((l, i) => (
-                <div key={l.name} style={{ flexDirection: "column", alignItems: "flex-start", gap: 6 }}>
-                  <span>{String(i + 1).padStart(2, "0")} · {l.name}</span>
-                  <span style={{ color: "var(--text-2)", fontFamily: "var(--sans)", fontSize: 14 }}>
-                    {l.items.join("   ·   ")}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </Section>
 
         {/* ── 17 CTA ──────────────────────────────────────────────────── */}
         <Section id="cta" tone="ink">
