@@ -44,21 +44,33 @@ export const HERO = {
      infrastructure. But protein is also the most concrete, most memorable
      thing here, and burying it wastes it.
 
-     The resolution is to pair it with an enterprise noun and a hard
-     contrast. "Archive" says who this is for. "Not in machines" says what
-     it replaces — and it is a statement about the DESIGN (a
-     hardware-independent representation), not a performance claim, so it
-     needs no validation to be true.
+     So the headline does not lead with the molecule at all. It leads with
+     the bill. Migration is the line item every enterprise archive owner
+     already knows they are paying — PROBLEM lists it last and it is the
+     one that recurs forever: each hardware generation is another full copy
+     of everything, bought again. "The last archive you'll ever migrate"
+     names the end of that, and the sub-head immediately says what makes it
+     true, which is where protein finally enters.
 
-     Alternates, same structure, swap in one line:
-       A  "Your coldest data,"          / "written in protein."
-       B  "Archive in protein."          / "Retrieve in decades."
-       C  "The archive that outlives"    / "the hardware that wrote it."
+     Why this survives the claim discipline, which is the test that matters
+     here: it is a statement about the DESIGN, not about performance. A
+     representation that is not tied to a hardware generation has nothing
+     to migrate TO — that is a property of the format, true on day one, and
+     it needs no density, lifespan or cost figure to hold. Compare "your
+     archive will last centuries", which reads similarly and is a lifespan
+     claim the technology has not yet validated.
+
+     Previous headlines, and alternates — same structure, swap in one line:
+       —  "The future of data storage"      / "is protein."
+       —  "Store your archive in protein."  / "Not in machines."
+       A  "Your coldest data,"              / "written in protein."
+       B  "Data that outlives"              / "the machines that stored it."
+       C  "Your archive doesn't"            / "belong on hardware."
      Deliberately NOT used: anything naming a density, a lifespan or a cost
      — "a petabyte in a protein" is the obvious headline and it is a claim
      the technology has not yet validated. */
-  titleA: "Store your archive in protein.",
-  titleB: "Not in machines.",
+  titleA: "The last archive",
+  titleB: "you’ll ever migrate.",
 
   sub:
     "Paralelly encodes enterprise data into amino-acid and protein-based media — a molecular archive with no drive to spin, no format to migrate and no hardware generation to survive. Built for data that must be kept for decades and read almost never.",
@@ -282,15 +294,76 @@ export const RESEARCH = {
     "Readiness is self-assessed against internal testing. Replace these with measured figures — storage density, retrieval accuracy, error rates, stability and environmental testing — before this page is public.",
 };
 
-export const ARCH = {
-  eyebrow: "Architecture",
-  title: "Where it sits in your estate.",
-  layers: [
-    { name: "Enterprise", items: ["AWS", "Azure", "GCP"] },
-    { name: "Archive platform", items: ["Encryption", "Encoding", "Deduplication"] },
-    { name: "Molecular storage", items: ["Synthesis", "Preservation"] },
-    { name: "Retrieval", items: ["Sequencing", "Reconstruction", "Verification"] },
+/* ── PUBLISHED EVIDENCE ─────────────────────────────────────────────────────
+   THE FOURTH KIND OF NUMBER, AND THE ONLY ONE ON THIS PAGE THAT IS REAL.
+
+   Everything else in this file is `plain`, `target` or `illustrative` — a
+   design fact, a stated goal, or sample data. This block is different: every
+   figure is a measured result from peer-reviewed literature, and each one
+   carries the paper it comes from.
+
+   ⚠ THE RULE FOR THIS BLOCK: these are OTHER GROUPS' results, not Paralelly's.
+   They establish that peptide storage works as a field — encoding, recovery,
+   density, error correction, preservation — which is exactly the question an
+   enterprise buyer asks first. They do not say anything about this company's
+   own system, and the copy must never imply they do. The moment a figure here
+   is presented as ours it becomes the kind of unvalidated claim the discipline
+   at the top of this file exists to prevent.
+
+   Every `src` was read at the source, not taken from a summary. Add nothing
+   here without doing the same. */
+export const EVIDENCE = {
+  eyebrow: "Published evidence",
+  title: "Peptide storage is demonstrated, not hypothetical.",
+  lede:
+    "Independent groups have encoded files into peptides, read them back by mass spectrometry, and recovered them intact. These are their published results, not ours — cited so the claims can be checked.",
+  items: [
+    {
+      k: "Files encoded and recovered",
+      v: "A 848-bit text file was written to 40 18-mer peptides and recovered at 100%. A 13,752-bit music file was written to 511 peptides; 93.7% of amino acids were read correctly and the file was recovered in full after error correction.",
+      src: "Ng et al., Nature Communications, 2021",
+      href: "https://www.nature.com/articles/s41467-021-24496-9",
+    },
+    {
+      k: "Encoding density",
+      v: "3 bits per amino acid across an 8-amino-acid alphabet, measured at 1.7 × 10¹⁰ bits/g. Because synthesis does not require enzyme recognition, unnatural amino acids can extend the alphabet — a theoretical ceiling of 3.72× DNA.",
+      src: "Ng et al., Nature Communications, 2021",
+      href: "https://www.nature.com/articles/s41467-021-24496-9",
+    },
+    {
+      k: "Error correction",
+      v: "Ordinary coding theory, not a new discipline: LDPC codes tolerating 10% missing amino acids, and Reed–Solomon at code rate 0.562.",
+      src: "Ng et al., Nature Communications, 2021",
+      href: "https://www.nature.com/articles/s41467-021-24496-9",
+    },
+    {
+      k: "Reading",
+      v: "Liquid chromatography with tandem mass spectrometry (LC-MS/MS) — established analytical instrumentation, not a bespoke sequencer.",
+      src: "Ng et al., Nature Communications, 2021",
+      href: "https://www.nature.com/articles/s41467-021-24496-9",
+    },
+    {
+      k: "Preservation under accelerated ageing",
+      v: "Peptides held in a chitosan hydrogel returned their information in full after 3.5 days at 70 °C — an accelerated-ageing equivalent of over 600 years at 9.4 °C. Reported data density 2.44 × 10¹⁰ GB/g.",
+      src: "Luo et al., Communications Materials, 2025",
+      href: "https://www.nature.com/articles/s43246-025-00915-y",
+    },
+    {
+      k: "Survival in deep time",
+      /* The multiplier here is the paper's, not a press release's. Secondary
+         coverage of this result says "almost 50 times older than any DNA
+         record"; the paper itself makes the narrower and better-defined
+         claim — a thermal age of ~16 Ma at 10 °C, two orders of magnitude
+         beyond the oldest recovered DNA. Thermal age, not calendar age, is
+         the comparison that controls for burial temperature, which is the
+         whole reason the Laetoli material survived. Use the paper. */
+      v: "Peptide sequences bound to mineral surfaces have been authenticated in 3.8-million-year-old ostrich eggshell from Laetoli — a thermal age of roughly 16 Ma at 10 °C, which the authors place two orders of magnitude beyond the oldest recovered DNA.",
+      src: "Demarchi et al., eLife, 2016",
+      href: "https://elifesciences.org/articles/17092",
+    },
   ],
+  note:
+    "These are results published by independent research groups, cited so they can be verified. They establish the feasibility of the medium. They are not measurements of Paralelly's own system, and nothing on this page should be read as claiming otherwise.",
 };
 
 export const CTA = {
@@ -323,7 +396,6 @@ export const FOOTER = {
         { label: "How it works", href: "#how" },
         { label: "Components", href: "#product" },
         { label: "Capabilities", href: "#capabilities" },
-        { label: "Architecture", href: "#architecture" },
       ],
     },
     {
