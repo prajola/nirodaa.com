@@ -1,5 +1,5 @@
 /**
- * Nirodaa — the homepage.
+ * Paralelly — the homepage.
  *
  * Section order follows the brief: hero, problem, the new layer, how it
  * works, platform, ingestion, policy, dashboard, security, why molecular,
@@ -338,7 +338,7 @@ export default function App() {
             <h2 className="nr-h2" style={{ maxWidth: "18ch" }}>{CTA.title}</h2>
             <p className="nr-lede" style={{ marginBottom: 30 }}>{CTA.lede}</p>
             <div className="nr-cta">
-              <a className="nr-btn nr-btn-solid" href="mailto:hello@nirodaa.com">{CTA.buttons[0]}</a>
+              <a className="nr-btn nr-btn-solid" href="mailto:hello@paralelly.com">{CTA.buttons[0]}</a>
             </div>
           </Reveal>
         </Section>
