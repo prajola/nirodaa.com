@@ -115,7 +115,7 @@ export default function App() {
         <div className="nr-wrap">
           <section className="nr-hero">
             <div>
-              <p className="nr-eyebrow"><b>—</b> {HERO.eyebrow}</p>
+              <p className="nr-eyebrow"><b>–</b> {HERO.eyebrow}</p>
               <h1 className="nr-h1">{HERO.titleA} <em>{HERO.titleB}</em></h1>
               <p className="nr-hero-sub">{HERO.sub}</p>
               <div className="nr-cta">
@@ -216,7 +216,7 @@ export default function App() {
               {CAPS.now.map((c) => <div className="nr-cell" key={c}><p style={{ color: "var(--text)" }}>{c}</p></div>)}
             </div>
             <p className="nr-eyebrow" style={{ marginTop: 34 }}>
-              <b>—</b> On the roadmap<span className="nr-tag">Not available</span>
+              <b>–</b> On the roadmap<span className="nr-tag">Not available</span>
             </p>
             <ul className="nr-chips">{CAPS.next.map((c) => <li key={c}>{c}</li>)}</ul>
             <Note>{CAPS.note}</Note>
@@ -250,7 +250,7 @@ export default function App() {
             </div>
             <Note>
               Sample data. These figures illustrate the shape of the dashboard and
-              are not measurements — replace them with a real tenant's numbers, or
+              are not measurements – replace them with a real tenant's numbers, or
               label the section as a preview, before this page is public.
             </Note>
           </Reveal>
@@ -298,7 +298,7 @@ export default function App() {
               {RESEARCH.parts.map((p) => <div key={p.k}><dt>{p.k}</dt><dd>{p.v}</dd></div>)}
             </dl>
             <p className="nr-eyebrow" style={{ marginTop: 34 }}>
-              <b>—</b> Technology readiness<span className="nr-tag">Self-assessed</span>
+              <b>–</b> Technology readiness<span className="nr-tag">Self-assessed</span>
             </p>
             <div className="nr-bars">
               {RESEARCH.readiness.map((r) => (
@@ -320,7 +320,7 @@ export default function App() {
               a reader cannot check is worth what an uncited one is worth. */}
           <Reveal>
             <p className="nr-eyebrow" style={{ marginTop: 44 }}>
-              <b>—</b> {EVIDENCE.eyebrow}<span className="nr-tag">Third-party</span>
+              <b>–</b> {EVIDENCE.eyebrow}<span className="nr-tag">Third-party</span>
             </p>
             <h3 className="nr-h2" style={{ fontSize: "clamp(21px, 2.2vw, 29px)" }}>
               {EVIDENCE.title}
